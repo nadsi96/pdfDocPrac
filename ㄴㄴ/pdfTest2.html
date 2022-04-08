@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+    <head>
+        <!-- <script src="pdf.js/src/pdf.js"></script> -->
+        <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+        
+        <script src="../jquery/jquery-3.4.1.js"></script>
+        <script src="pdfTest2.js"></script>
+        <script src="ctrlProperty.js"></script>
+        <link rel="stylesheet" href="pdfTest.css">
+        
+    </head>
+    <body onload="includeHTML();">
+        <div style="display: flex;">
+            <div>
+                <div id="pdfCtrlArea" class="contentArea">
+                    <button id="btn_prev">prev</button>
+                    <input id="pdfCurrentPageNum" value="1" type="number" style="width: 50px;" maxlength="10" min="1">
+                    <span class="pdfPage">/</span>
+                    <span id="pdfTotalPageNum" class="pdfPage"></span>
+                    <button id="btn_next">next</button>
+                </div>
+
+                <!-- <div w3-include-html="innerFrame.html" class="contentArea"></div> -->
+                <iframe class="contentArea" src="innerFrame2.html" onload="onInit(); initCtrlProperty();" style="width: 800px; height: 1200px;"></iframe>
+                <!-- <div class="contentArea">
+                    <div class="pdfContentArea">
+                        <canvas id="pdfArea"></canvas>
+                        
+                    </div>
+                </div> -->
+            </div>
+            <div>
+                <div>
+                    <button onclick="cancelCreaetControl()">cancel</button>
+                    <button onclick="creaetControl()">create input</button>
+                    <button onclick="savePage()">save</button>
+                </div>
+                <div>
+                    <table>
+                        <tr>
+                            <td>name</td>
+                            <td>
+                                <input id="ctrl_attr_1" class="ctrl_attr">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>type</td>
+                            <td>
+                                <select id="ctrl_attr_2" class="ctrl_attr">
+                                    <option value="number">number</option>
+                                    <option value="text" selected>text</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>maxLength</td>
+                            <td>
+                                <input id="ctrl_attr_3" class="ctrl_attr" type="number" min="1">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- <script>
+        includeHTML();
+        onInit();
+        initCtrlProperty();
+    </script> -->
+</html>

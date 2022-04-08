@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        
+        <!-- <script src="pdf.js/src/pdf.js"></script> -->
+        <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+        
+        <script src="lib/file-saver/dist/FileSaver.js"></script>
+
+        <script src="lib/jquery/jquery-3.4.1.js"></script>
+        <script src="ctrl/canvas.js"></script>
+        <script src="ctrl/combo.js"></script>
+        <script src="setPDF.js"></script>
+        <script src="pdfTest.js"></script>
+        <script src="ctrlProperty.js"></script>
+        <link rel="stylesheet" href="pdfTest.css">
+        
+    </head>
+    <!-- <body onload="includeHTML();"> -->
+    <!-- <body onload="checkSaveFile();"> -->
+    <body onload="onInit(); initCtrlProperty();">
+        <div>
+            <div>
+                <button class="btn_cmd" onclick="savePage()">save</button>
+                <button class="btn_cmd" id="btn_callPdf">pdf 불러오기</button>
+                <button class="btn_cmd" id="btn_callEdit">편집화면 불러오기</button>
+                <input type="file" id="btn_callPdf_hidden" class="hidden">
+                <input type="file" id="btn_callEdit_hidden" class="hidden">
+                
+            </div>
+            <div style="display: flex;">
+                
+                <div>
+                    <div id="pdfCtrlArea" class="contentArea">
+                        <button id="btn_prev" class="btn_cmd">prev</button>
+                        <input id="pdfCurrentPageNum" class="btn_cmd" value="1" type="number" style="width: 50px;" maxlength="10" min="1">
+                        <span class="pdfPage">/</span>
+                        <span id="pdfTotalPageNum" class="pdfPage btn_cmd"></span>
+                        <button id="btn_next" class="btn_cmd">next</button>
+                    </div>
+
+                    <div class="contentContainer">
+                        <div id="sideView"></div>
+                        <div style="width: 1200px; height: 1200px; border: 1px solid black; background-color: #ddd">
+                            <div w3-include-html="innerFrame.html" class="contentArea htmlContainer">
+                                <div class="pdfContentArea">
+                                    <canvas id="pdfArea"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="contentArea">
+                        <div class="pdfContentArea">
+                            <canvas id="pdfArea"></canvas>
+
+                        </div>
+                    </div> -->
+                </div>
+                <div style="border: 1px solid black;">
+                    <div style="display: flex; flex-direction: column; padding: 10px;">
+                        <button class="btn_cmd" onclick="cancelCreaetControl()">cancel</button>
+                        <button class="btn_cmd btn_delete_control" onclick="deleteCtrl()">delete</button>
+                        <button class="btn_cmd" onclick="createControl('input')">create input</button>
+                        <button class="btn_cmd" onclick="createControl('chkBox')">create chkBox</button>
+                        <button class="btn_cmd" onclick="createControl('cmbBox')">create cmbBox</button>
+                        <button class="btn_cmd" onclick="createControl('canvas')">canvas</button>
+                    </div>
+                    <div style="margin: 10px; border: 1px solid black;">
+                        <table class="ctrlProperties">
+                            <tr class="inputText inputChkBox cmbBox">
+                                <td>name</td>
+                                <td>
+                                    <input id="ctrl_attr_1" class="ctrl_attr">
+                                </td>
+                            </tr>
+                            <tr class="inputText">
+                                <td>type</td>
+                                <td>
+                                    <select id="ctrl_attr_2" class="ctrl_attr">
+                                        <option value="number">number</option>
+                                        <option value="text" selected>text</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="inputText">
+                                <td>maxLength</td>
+                                <td>
+                                    <input id="ctrl_attr_3" class="ctrl_attr" type="number" min="1">
+                                </td>
+                            </tr>
+                            <tr class="inputChkBox">
+                                <td>caption</td>
+                                <td>
+                                    <input id="ctrl_attr_4" class="ctrl_attr">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>set combo property</td>
+                                <td>
+                                    <button id="ctrl_attr_5" class="ctrl_attr">insert ItemList</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>width</td>
+                                <td>
+                                    <input id="ctrl_attr_6" class="ctrl_attr">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>height</td>
+                                <td>
+                                    <input id="ctrl_attr_7" class="ctrl_attr">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>hint</td>
+                                <td>
+                                    <input id="ctrl_attr_8" class="ctrl_attr">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>필수여부</td>
+                                <td>
+                                    <select id="ctrl_attr_9" class="ctrl_attr">
+                                        <option value="0" selected>ㄴㄴ</option>
+                                        <option value="1">필수</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- <script>
+        includeHTML();
+        onInit();
+        initCtrlProperty();
+    </script> -->
+</html>

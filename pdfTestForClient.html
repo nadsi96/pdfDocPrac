@@ -1,0 +1,40 @@
+<html>
+    <header>
+        <meta charset="utf-8">
+        <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- <script src="lib/html2canvas.js"></script>
+        <script src="lib/jspdf.min.js"></script> -->
+
+        <script src="lib/jquery/jquery-3.4.1.js"></script>
+        <script src="setPDF.js"></script>
+        <script src="pdfTestForClient.js"></script>
+        <!-- <script type="module" src="../pdfTest/pdfTestForClient.js"></script> -->
+        <script src="ctrl/canvas.js"></script>
+        <script src="ctrl/combo.js"></script>
+        <link rel="stylesheet" href="pdfTest.css">
+    </header>
+    <body onload="onInit();" style="width: fit-content;">
+        <div style="width: 100%;">
+            <div>
+                <button id="btn_saveAsPdf">save as PDF</button>
+                <button id="btn_openDoc">open Docu</button>
+                <input id="btn_openDoc_hidden" class="hidden" type="file">
+            </div>
+            <div id="pdfCtrlArea" class="contentArea">
+                <button id="btn_prev" class="btn_cmd">prev</button>
+                <input id="pdfCurrentPageNum" class="btn_cmd" value="1" type="number" style="width: 50px;" maxlength="10" min="1">
+                <span class="pdfPage">/</span>
+                <span id="pdfTotalPageNum" class="pdfPage btn_cmd"></span>
+                <button id="btn_next" class="btn_cmd">next</button>
+            </div>
+        </div>
+        
+        <div class="contentContainer">
+            <div id="sideView"></div>
+            <div w3-include-html="innerFrame.html" class="contentArea htmlContainer"></div>
+        </div>
+
+        </div>
+    </body>
+</html>
