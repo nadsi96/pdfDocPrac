@@ -9,9 +9,9 @@ var radio = {
             {val: '3', txt: 'radio3'},
         ];
 
-        $('.ctrl.rdoBox').each(function(idx, elem){
-            rdoNameSet.add(elem.name);
-        })
+        // $('.ctrl.rdoBox').each(function(idx, elem){
+        //     rdoNameSet.add(elem.name);
+        // })
 
         let dt = new Date();
         let name = dt.getTime();
@@ -38,6 +38,8 @@ var radio = {
             elem.append(div);
         }
 
+        $(elem).find('input')[0].defaultChecked = true;
+        
         elem.radio = {
             rdName: 'rdo' + name,
             itemList: itemList,
@@ -72,7 +74,8 @@ var radio = {
     clickEvent: function(e, elem){
         e.stopPropagation();
         $(elem).find('input[type=radio]').prop('defaultChecked', false);
-        elem.defaultChecked = true;
+        // elem.defaultChecked = true;
+        e.target.defaultChecked = true;
     },
     reset: function(ctrl){
         $(ctrl).find('input[type=radio]').each(function(idx, elem){
@@ -96,7 +99,7 @@ var radio = {
                     input.name = this.rdName;
                     input.value = item.val;
                     input.addEventListener('click', function(e){
-                        radio.clickEvent(e, elem);
+                        radio.clickEvent(e, $(ctrl));
                     });
                 
                     let span = document.createElement('span');
@@ -107,6 +110,8 @@ var radio = {
                     div.append(label);
                     $(ctrl).append(div);
                 }
+
+                $(ctrl).find('input')[0].defaultChecked = true;
             }
         };
     },

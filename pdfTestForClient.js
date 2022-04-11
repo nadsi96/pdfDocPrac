@@ -237,6 +237,14 @@ let docUrl = '../docs/Document.pdf';
 function saveToPDF(){
     console.log('save as pdf');
 
+    if(checkEmptyItem()){
+        // 필수항목 다 채워짐
+    }
+    else{
+        // ㄴㄴ
+        alert('asdf');
+        return;
+    }
     // 캔버스에 clear버튼 제거
     $('.btn_canvasClear').remove();
     $('.cmbBox ul').css('display', 'none');
@@ -463,6 +471,12 @@ function setCtrlData(){
             canvas.setEvent2(ctrl);
             canvas.setClearBtn(ctrl);
         }
+        else if(ctrl.dataset['ctrlType'] == "radio"){
+            
+        }
+        else if(ctrl.dataset['ctrlType'] == 'calendar'){
+            ctrl.value = ctrl.dataset['selectedDate'];
+        }
     });
 
     // 콤보 열린게 있을때
@@ -473,7 +487,51 @@ function setCtrlData(){
     })
 }
 
+// 필수 체크한 것 중 빈칸 있는지 확인
+// chkBox 제외
+function checkEmptyItem(){
+    let flag = true;
 
+    $('.ctrlArea').find('.necessary').each(function(idx, elem){
+        switch(elem.dataset.ctrlType){
+            case 'text': case 'calendar':
+                if(elem.value == ''){
+                    flag = false;
+                    console.log(elem.dataset.ctrlType);
+                    return false;
+                }
+                break;
+            case 'chkBox':
+                
+                break;
+            case 'cmbBox':
+                // 항상 기본값 있
+                break;
+            case 'radio':
+                // 항상 기본값 있
+                break;
+            case 'canvas':
+                if(elem.dataset.linePath){
+                    let lp = JSON.parse(elem.dataset.linePath);
+                    if(lp.moveTo.length < 1 || lp.lineTo < 1){
+                        flag = false;
+                        console.log(elem.dataset.ctrlType);
+                        return false;
+                    }
+                }
+                else{
+                    flag = false;
+                    console.log(elem.dataset.ctrlType);
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+    });
+
+    return flag;
+}
 
 
 // function toPdfFile(){

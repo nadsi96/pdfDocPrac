@@ -256,6 +256,7 @@ var canvas = {
                 }
                 ctrlCtx.stroke();
 
+                ctrl.dataset['linePath'] = JSON.stringify(linePos);
                 $(container).remove();
             });
 
@@ -270,6 +271,7 @@ var canvas = {
             btnClear.addEventListener('click', function(){
                 linePos.moveTo = [];
                 linePos.lineTo = [];
+                ctrl.dataset['linePath'] = JSON.stringify(linePos);
                 ctx.clearRect(0,0,canvas.width, canvas.height);
             });
 
