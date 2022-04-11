@@ -353,6 +353,7 @@ function copyPage(toPdf, pageNum){
                 format: 'a4',
                 compressPDF: false,
             },
+
             // jsPDF: {
             //     orientation: (pages[0].offsetHeight > pages[0].offsetWidth) ? 'portrait' : 'landscape',
             //     unit: 'px',

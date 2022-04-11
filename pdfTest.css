@@ -263,6 +263,26 @@ input.ctrl::-webkit-inner-spin-button{
     white-space: nowrap;
 }
 
+.ctrl.rdoBox{
+    height: fit-content;
+}
+.ctrl.rdoBox div{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ctrl.rdoBox div label{
+    width: 100%;
+    white-space: nowrap;
+}
+.ctrl.rdoBox span{
+    /* width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+}
+
+
 
 
 .ctrl_canvas{

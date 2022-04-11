@@ -37,34 +37,41 @@ function initCtrlProperty(){
 
 function clearAttrInput(selectedElem){
     $('.ctrl_attr').val('');
-    $('.ctrl_attr').attr('disabled', false)
+    $('.ctrl_attr').attr('disabled', true)
     if(selectedElem){
-        switch(selectedElem.dataset["ctrlType"]){
-            case 'text':
-                $('#ctrl_attr_4').attr('disabled', true);
-                $('#ctrl_attr_5').attr('disabled', true);
-                break;
-            case 'chkBox':
-                $('#ctrl_attr_2').attr('disabled', true);
-                $('#ctrl_attr_3').attr('disabled', true);
-                $('#ctrl_attr_5').attr('disabled', true);
-                $('#ctrl_attr_8').attr('disabled', true);
-                break;
-            case 'cmbBox':
-                $('#ctrl_attr_2').attr('disabled', true);
-                $('#ctrl_attr_3').attr('disabled', true);
-                $('#ctrl_attr_4').attr('disabled', true);
-                $('#ctrl_attr_8').attr('disabled', true);
-                break;
-            case 'canvas':
-                $('#ctrl_attr_2').attr('disabled', true);
-                $('#ctrl_attr_3').attr('disabled', true);
-                $('#ctrl_attr_4').attr('disabled', true);
-                $('#ctrl_attr_5').attr('disabled', true);
-                break;
-            default:
-                return;
-        }
+        $(`.ctrl_attr.attr_${selectedElem.dataset.ctrlType}`).attr('disabled', false);
+        // switch(selectedElem.dataset["ctrlType"]){
+        //     case 'text':
+        //         $('#ctrl_attr_4').attr('disabled', true);
+        //         $('#ctrl_attr_5').attr('disabled', true);
+        //         break;
+        //     case 'chkBox':
+        //         $('#ctrl_attr_2').attr('disabled', true);
+        //         $('#ctrl_attr_3').attr('disabled', true);
+        //         $('#ctrl_attr_5').attr('disabled', true);
+        //         $('#ctrl_attr_8').attr('disabled', true);
+        //         break;
+        //     case 'cmbBox':
+        //         $('#ctrl_attr_2').attr('disabled', true);
+        //         $('#ctrl_attr_3').attr('disabled', true);
+        //         $('#ctrl_attr_4').attr('disabled', true);
+        //         $('#ctrl_attr_8').attr('disabled', true);
+        //         break;
+        //     case 'canvas':
+        //         $('#ctrl_attr_2').attr('disabled', true);
+        //         $('#ctrl_attr_3').attr('disabled', true);
+        //         $('#ctrl_attr_4').attr('disabled', true);
+        //         $('#ctrl_attr_5').attr('disabled', true);
+        //         break;
+        //     case 'radio':
+        //         $('#ctrl_attr_2').attr('disabled', true);
+        //         $('#ctrl_attr_3').attr('disabled', true);
+        //         $('#ctrl_attr_4').attr('disabled', true);
+        //         $('#ctrl_attr_8').attr('disabled', true);
+        //         break;
+        //     default:
+        //         return;
+        // }
     }
     else{
         $('.ctrl_attr').attr('disabled', true);
@@ -142,9 +149,10 @@ function ctrl_attr_4_func(){
 }
 
 function ctrl_attr_5_func(){
-    if(g_selectedControl.dataset['ctrlType'] == 'cmbBox'){
-        openCmbSetter(g_selectedControl);
-    }    
+    // if(g_selectedControl.dataset['ctrlType'] == 'cmbBox'){
+    //     openCmbSetter(g_selectedControl);
+    // }
+    openCmbSetter(g_selectedControl);
 }
 
 function ctrl_attr_6_func(){
@@ -291,15 +299,30 @@ function openCmbSetter(ctrl){
 
     // 기존 내용 입력
     if(ctrl){
-        let options = $(ctrl).find('li');
-        for(let idx = 0; idx < options.length; idx++){
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-            <td class="tblIdx">${idx+1}</td>
-            <td><input value="${options[idx].dataset['val']}"></td>
-            <td><input value="${options[idx].innerHTML}"></td>
-            `;
-            tbl.append(tr);
+        if(ctrl.dataset.ctrlType == 'cmbBox'){
+            let options = $(ctrl).find('li');
+            for(let idx = 0; idx < options.length; idx++){
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                <td class="tblIdx">${idx+1}</td>
+                <td><input value="${options[idx].dataset['val']}"></td>
+                <td><input value="${options[idx].innerHTML}"></td>
+                `;
+                tbl.append(tr);
+            }
+        }
+        else if(ctrl.dataset.ctrlType == 'radio'){
+            $(ctrl).find('label').each(function(idx, elem){
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="tblIdx">${idx}</td>
+                    <td><input value="${$(elem).find('input[type=radio]').val()}"></td>
+                    <td><input value="${$(elem).find('span').text()}"></td>
+                `;
+                // $(elem).find('input[type=radio]').val();
+                // $(elem).find('span').text();
+                tbl.append(tr);
+            });
         }
     }
     let tr = document.createElement('tr');
@@ -353,7 +376,12 @@ function openCmbSetter(ctrl){
                 itemList.push({val: val, txt: txt});
             }
         }
-        ctrl.combo.setItems(itemList);
+        if(ctrl.dataset.ctrlType == 'cmbBox'){
+            ctrl.combo.setItems(itemList);
+        }
+        else if(ctrl.dataset.ctrlType == 'radio'){
+            ctrl.radio.setItems(itemList);
+        }
         
         // 팝업 닫
         container.remove();

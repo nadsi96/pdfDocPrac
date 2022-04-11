@@ -10,6 +10,7 @@
         <script src="lib/jquery/jquery-3.4.1.js"></script>
         <script src="ctrl/canvas.js"></script>
         <script src="ctrl/combo.js"></script>
+        <script src="ctrl/radio.js"></script>
         <script src="setPDF.js"></script>
         <script src="pdfTest.js"></script>
         <script src="ctrlProperty.js"></script>
@@ -64,64 +65,65 @@
                         <button class="btn_cmd" onclick="createControl('chkBox')">create chkBox</button>
                         <button class="btn_cmd" onclick="createControl('cmbBox')">create cmbBox</button>
                         <button class="btn_cmd" onclick="createControl('canvas')">canvas</button>
+                        <button class="btn_cmd" onclick="createControl('radio')">radio</button>
                     </div>
                     <div style="margin: 10px; border: 1px solid black;">
                         <table class="ctrlProperties">
-                            <tr class="inputText inputChkBox cmbBox">
+                            <tr class="">
                                 <td>name</td>
                                 <td>
-                                    <input id="ctrl_attr_1" class="ctrl_attr">
+                                    <input id="ctrl_attr_1" class="ctrl_attr attr_text attr_chkBox attr_cmbBox attr_canvas attr_radio">
                                 </td>
                             </tr>
-                            <tr class="inputText">
+                            <tr class="">
                                 <td>type</td>
                                 <td>
-                                    <select id="ctrl_attr_2" class="ctrl_attr">
+                                    <select id="ctrl_attr_2" class="ctrl_attr attr_text">
                                         <option value="number">number</option>
                                         <option value="text" selected>text</option>
                                     </select>
                                 </td>
                             </tr>
-                            <tr class="inputText">
+                            <tr class="">
                                 <td>maxLength</td>
                                 <td>
-                                    <input id="ctrl_attr_3" class="ctrl_attr" type="number" min="1">
+                                    <input id="ctrl_attr_3" class="ctrl_attr attr_text" type="number" min="1">
                                 </td>
                             </tr>
-                            <tr class="inputChkBox">
+                            <tr class="">
                                 <td>caption</td>
                                 <td>
-                                    <input id="ctrl_attr_4" class="ctrl_attr">
+                                    <input id="ctrl_attr_4" class="ctrl_attr attr_chkBox">
                                 </td>
                             </tr>
-                            <tr>
-                                <td>set combo property</td>
+                            <tr class="">
+                                <td>set itemList</td>
                                 <td>
-                                    <button id="ctrl_attr_5" class="ctrl_attr">insert ItemList</button>
+                                    <button id="ctrl_attr_5" class="ctrl_attr attr_chkBox">insert ItemList</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>width</td>
                                 <td>
-                                    <input id="ctrl_attr_6" class="ctrl_attr">
+                                    <input id="ctrl_attr_6" class="ctrl_attr attr_text attr_chkBox attr_cmbBox attr_canvas attr_radio">
                                 </td>
                             </tr>
                             <tr>
                                 <td>height</td>
                                 <td>
-                                    <input id="ctrl_attr_7" class="ctrl_attr">
+                                    <input id="ctrl_attr_7" class="ctrl_attr attr_text attr_chkBox attr_cmbBox attr_canvas attr_radio">
                                 </td>
                             </tr>
                             <tr>
                                 <td>hint</td>
                                 <td>
-                                    <input id="ctrl_attr_8" class="ctrl_attr">
+                                    <input id="ctrl_attr_8" class="ctrl_attr attr_text attr_canvas">
                                 </td>
                             </tr>
                             <tr>
                                 <td>필수여부</td>
                                 <td>
-                                    <select id="ctrl_attr_9" class="ctrl_attr">
+                                    <select id="ctrl_attr_9" class="ctrl_attr attr_text attr_chkBox attr_cmbBox attr_canvas attr_radio">
                                         <option value="0" selected>ㄴㄴ</option>
                                         <option value="1">필수</option>
                                     </select>

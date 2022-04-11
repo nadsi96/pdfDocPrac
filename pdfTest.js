@@ -260,6 +260,11 @@ function createControl(tag){
                     ctrl = canvas.createCanvas();
                     ctrl.dataset['ctrlType'] = 'canvas';
                     break;
+                case 'radio':
+                    // ctrl = radio();
+                    ctrl = radio.create();
+                    ctrl.dataset['ctrlType'] = 'radio';
+                    break;
                 default:
                     return;
             }
@@ -418,6 +423,9 @@ function resetCtrlEvent(){
         // else if(ctrl.dataset['ctrlType'] == 'canvas'){
         //     canvas.setEvent(ctrl);
         // }
+        else if(ctrl.dataset['ctrlType'] == 'radio'){
+            radio.reset(ctrl);
+        }
     });
 }
 
