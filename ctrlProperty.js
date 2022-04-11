@@ -93,7 +93,9 @@ function ctrl_setAttrInfo(selectedElem){
                 $('#ctrl_attr_1').val(val[1].value);
                 break;
             case 'type':
-                $('#ctrl_attr_2').val(val[1].value).change();
+                if(['number', 'text'].includes(val[1].value)){
+                    $('#ctrl_attr_2').val(val[1].value).change();
+                }
                 break;
             case 'maxlength':
                 $('#ctrl_attr_3').val(val[1].value);

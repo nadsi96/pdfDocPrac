@@ -265,6 +265,11 @@ function createControl(tag){
                     ctrl = radio.create();
                     ctrl.dataset['ctrlType'] = 'radio';
                     break;
+                case 'calendar':
+                    ctrl = document.createElement('input');
+                    ctrl.type = 'date';
+                    ctrl.dataset['ctrlType'] = 'calendar';
+                    break;
                 default:
                     return;
             }
@@ -382,6 +387,11 @@ function setCtrlEvent(ctrl){
         // case 'canvas':
         //     canvas.setEvent(ctrl);
         //     break;
+        case 'calendar':
+            ctrl.addEventListener('change', function(e){
+                ctrl.dataset['selectedDate'] = ctrl.value;
+            });
+            break;
         default:
             break;
     }
@@ -425,6 +435,12 @@ function resetCtrlEvent(){
         // }
         else if(ctrl.dataset['ctrlType'] == 'radio'){
             radio.reset(ctrl);
+        }
+        else if(ctrl.dataset['ctrlType'] == 'calendar'){
+            ctrl.value = ctrl.dataset['selectedDate'];
+            ctrl.addEventListener('change', function(e){
+                ctrl.dataset['selectedDate'] = ctrl.value;
+            });
         }
     });
 }
