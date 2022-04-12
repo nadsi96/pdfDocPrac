@@ -136,7 +136,7 @@ function callPDF(docPath, fileLoadFlag){
     g_docPath = docPath;
 
 
-    // pdf 비동기로 불러옴
+    // pdf 호출
     var loadingTask = pdfjsLib.getDocument(docPath);
     loadingTask.promise.then(function(pdf){
         console.log('pdf loaded');
@@ -167,27 +167,9 @@ function callPDF(docPath, fileLoadFlag){
             // 페이지 공간 클릭시 이벤트 설정
             setCtrlAreaClickEvent();
         }
-        // if(fileLoadFlag == 'edit'){
-        //     resetCtrlEvent();
-        // }
-        // else if(fileLoadFlag == 'client'){
-        //     setCtrlData();
-        // }
-        // else{
-        //     // 페이지 수만큼 컨트롤 입력할 공간 생성
-        //     for(let idx = 0; idx < docState.pdf.numPages; idx++){
-        //         let div = document.createElement('div');
-        //         div.classList.add('ctrlArea');
-        //         $('.pdfContentArea').append(div);
-        //     }
-        // }
-        // // 페이지 공간 클릭시 이벤트 설정
-        // setCtrlAreaClickEvent();
 
         docState.canvas = document.getElementById('pdfArea');
         docState.context = docState.canvas.getContext('2d');
-
-        // renderPage(docState.pageNum));
 
         // pdf공간 옆에 미리보기화면
         docState.pdf.getPage(1).then(function(page){
@@ -212,7 +194,6 @@ function setSideView(page, pageNum){
     canvas.height = viewPort.height;
     canvas.width = viewPort.width;
     canvas.addEventListener('click', function(){
-        // $('#sideView').scrollTop(this.offsetTop - 200);
         docState.pageNum = pageNum;
         renderPage(pageNum);
     });

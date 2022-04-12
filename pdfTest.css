@@ -83,7 +83,7 @@ input.ctrl::-webkit-inner-spin-button{
 .ctrl.selected{
     border: 2px dashed black;
 }
-.ctrl.necessary{
+.ctrl.required{
     border-color: red;
 }
 

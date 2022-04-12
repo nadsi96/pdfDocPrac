@@ -459,9 +459,17 @@ function setCtrlData(){
     $('.ctrl').each(function(idx, ctrl){
         if(ctrl.dataset['ctrlType'] == "text"){
             ctrl.value = ctrl.dataset['text'] || '';
+            if(ctrl.getAttribute('type') == 'number'){
+                ctrl.addEventListener('input', function(e){
+                    if(ctrl.value.length > ctrl.maxLength){
+                        ctrl.value = ctrl.value.slice(0, ctrl.maxLength);
+                    }
+                })
+            }
         }
         else if(ctrl.dataset['ctrlType'] == 'cmbBox'){
-            resetCombo(ctrl);
+            // resetCombo(ctrl);
+            combo2.reset(ctrl);
         }
         else if(ctrl.dataset['ctrlType'] == 'chkBox'){
             $(ctrl).find('input').prop('checked', ctrl.dataset['checked']);
@@ -492,7 +500,7 @@ function setCtrlData(){
 function checkEmptyItem(){
     let flag = true;
 
-    $('.ctrlArea').find('.necessary').each(function(idx, elem){
+    $('.ctrlArea').find('.required').each(function(idx, elem){
         switch(elem.dataset.ctrlType){
             case 'text': case 'calendar':
                 if(elem.value == ''){

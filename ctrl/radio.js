@@ -40,35 +40,6 @@ var radio = {
 
         $(elem).find('input')[0].defaultChecked = true;
         
-        elem.radio = {
-            rdName: 'rdo' + name,
-            itemList: itemList,
-            setItems: function(lst){
-                this.itemList = lst;
-                $(elem).empty();
-
-                for(let item of this.itemList){
-                    let div = document.createElement('div');
-                    let label = document.createElement('label');
-                
-                    let input = document.createElement('input');
-                    input.type = 'radio';
-                    input.name = this.rdName;
-                    input.value = item.val;
-                    input.addEventListener('click', function(e){
-                        radio.clickEvent(e, elem);
-                    });
-                
-                    let span = document.createElement('span');
-                    span.textContent = item.txt;
-                
-                    label.append(input);
-                    label.append(span);
-                    div.append(label);
-                    elem.append(div);
-                }
-            }
-        };
         return elem;
     },
     clickEvent: function(e, elem){
@@ -83,36 +54,31 @@ var radio = {
                 radio.clickEvent(e, elem);
             });
         });
-        ctrl.radio = {
-            rdName: ctrl.dataset.rdName,
-            itemList: [],
-            setItems: function(lst){
-                this.itemList = lst;
-                $(ctrl).empty();
-
-                for(let item of this.itemList){
-                    let div = document.createElement('div');
-                    let label = document.createElement('label');
-                
-                    let input = document.createElement('input');
-                    input.type = 'radio';
-                    input.name = this.rdName;
-                    input.value = item.val;
-                    input.addEventListener('click', function(e){
-                        radio.clickEvent(e, $(ctrl));
-                    });
-                
-                    let span = document.createElement('span');
-                    span.textContent = item.txt;
-                
-                    label.append(input);
-                    label.append(span);
-                    div.append(label);
-                    $(ctrl).append(div);
-                }
-
-                $(ctrl).find('input')[0].defaultChecked = true;
-            }
-        };
     },
+    setItem: function(lst, ctrl){
+        $(ctrl).empty();
+
+        for(let item of lst){
+            let div = document.createElement('div');
+            let label = document.createElement('label');
+        
+            let input = document.createElement('input');
+            input.type = 'radio';
+            input.name = ctrl.dataset.rdName;
+            input.value = item.val;
+            input.addEventListener('click', function(e){
+                radio.clickEvent(e, $(ctrl));
+            });
+        
+            let span = document.createElement('span');
+            span.textContent = item.txt;
+        
+            label.append(input);
+            label.append(span);
+            div.append(label);
+            $(ctrl).append(div);
+        }
+
+        $(ctrl).find('input')[0].defaultChecked = true;
+    }
 }

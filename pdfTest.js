@@ -253,7 +253,9 @@ function createControl(tag){
                     // ctrl = document.createElement('select');
                     // ctrl.classList.add('cmbBox');
                     // ctrl.dataset['ctrlType'] = 'cmbBox';
-                    ctrl = combo();
+
+                    // ctrl = combo();
+                    ctrl = combo2.create();
                     ctrl.dataset['ctrlType'] = "cmbBox";
                     break;
                 case 'canvas':
@@ -422,7 +424,8 @@ function resetCtrlEvent(){
             //     ctrl.dataset['selectedValue'] = ctrl.value;
             // })
 
-            resetCombo(ctrl);
+            // resetCombo(ctrl);
+            combo2.reset(ctrl);
         }
         else if(ctrl.dataset['ctrlType'] == 'chkBox'){
             $(ctrl).find('input').prop('checked', ctrl.dataset['checked']);
@@ -768,7 +771,7 @@ function saveAsJson(){
                     }
                     break;
                 case 'cmbBox':
-                    data.property.push({itemList: ctrl.combo.itemList});
+                    data.property.push({itemList: JSON.parse(ctrl.dataset.itemList)});
                     data.option = {selected: $(ctrl).find('li.selected').val()}
                     break;
                 case 'chkBox':

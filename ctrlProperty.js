@@ -111,7 +111,7 @@ function ctrl_setAttrInfo(selectedElem){
         }
     });
 
-    $('#ctrl_attr_9').val((selectedElem.classList.contains('necessary') ? '1' : '0')).change();
+    $('#ctrl_attr_9').val((selectedElem.classList.contains('required') ? '1' : '0')).change();
     
 }
 
@@ -263,10 +263,10 @@ function ctrl_attr_8_func(){
 function ctrl_attr_9_func(){
     if(g_selectedControl){
         if($('#ctrl_attr_9').val() == '1'){
-            g_selectedControl.classList.add('necessary');
+            g_selectedControl.classList.add('required');
         }
         else{
-            g_selectedControl.classList.remove('necessary');
+            g_selectedControl.classList.remove('required');
         }
     }
 }
@@ -379,10 +379,12 @@ function openCmbSetter(ctrl){
             }
         }
         if(ctrl.dataset.ctrlType == 'cmbBox'){
-            ctrl.combo.setItems(itemList);
+            // ctrl.combo.setItems(itemList);
+            combo2.setItems(itemList, ctrl);
         }
         else if(ctrl.dataset.ctrlType == 'radio'){
-            ctrl.radio.setItems(itemList);
+            // ctrl.radio.setItems(itemList);
+            radio.setItem(itemList, ctrl);
         }
         
         // 팝업 닫
