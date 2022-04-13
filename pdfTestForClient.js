@@ -236,6 +236,7 @@ let docUrl = '../docs/Document.pdf';
 // display block으로 주고 save시키면 되려나
 function saveToPDF(){
     console.log('save as pdf');
+    saveAsJson();
 
     if(checkEmptyItem()){
         // 필수항목 다 채워짐
@@ -653,3 +654,66 @@ function checkEmptyItem(){
 //         copyPage2(1, pages);
 //     });
 // }
+
+
+function saveAsJson(){
+    let jsonData = {
+        pdfPath: g_docPath,
+        pages: [],
+    };
+
+    $('.ctrlArea').each(function(idx, area){
+        let ctrlData = [];
+        for(let ctrl of area.children){
+            let data = {};
+            data.type = ctrl.dataset.ctrlType;
+            data.name = ctrl.dataset.name || '';
+            data.property = [];
+
+            switch(data.type){
+                case 'text':
+                    data.property.push({type: (ctrl.getAttribute('type') || 'text')});
+                    if(ctrl.getAttribute('maxlength')){
+                        data.property.push({maxLength: ctrl.getAttribute('maxlength')});
+                    }
+                    if(ctrl.dataset.text){
+                        data.caption = ctrl.dataset.text;
+                    }
+                    break;
+                case 'cmbBox':
+                    data.property.push({itemList: JSON.parse(ctrl.dataset.itemList)});
+                    data.option = {selected: $(ctrl).find('li.selected').data('val')};
+                    break;
+                case 'chkBox':
+                    data.property.push({caption: ctrl.getAttribute('caption')});
+                    data.option = {selected: $(ctrl).find('input')[0].checked};
+                    break;
+                case 'radio':
+                    data.itemList = JSON.parse(ctrl.dataset.itemList);
+                    data.selected = $(ctrl).find('input:checked').val();
+                    break;
+                case 'canvas':
+                    data.linePath = JSON.parse(ctrl.dataset.linePath || '[]');
+                    break;
+                default:
+                    continue;
+            }
+
+            data.pos = {
+                left: ctrl.style.left,
+                top: ctrl.style.top,
+            };
+            data.size = {
+                width: ctrl.style.width || $(ctrl).width(),
+                height: ctrl.style.height || $(ctrl).height(),
+            };
+
+            ctrlData.push(data);
+        }
+
+        jsonData.pages.push(ctrlData);
+    });
+
+    let blob = new Blob([JSON.stringify(jsonData)], {type: 'application/json'});
+    window.saveAs(blob, 'result.json');
+}

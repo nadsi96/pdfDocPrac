@@ -9,6 +9,7 @@ var radio = {
             {val: '3', txt: 'radio3'},
         ];
 
+        elem.dataset.itemList = JSON.stringify(itemList);
         // $('.ctrl.rdoBox').each(function(idx, elem){
         //     rdoNameSet.add(elem.name);
         // })
@@ -79,6 +80,7 @@ var radio = {
             $(ctrl).append(div);
         }
 
+        ctrl.dataset.itemList = JSON.stringify(lst);
         $(ctrl).find('input')[0].defaultChecked = true;
     }
 }

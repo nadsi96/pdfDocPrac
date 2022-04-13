@@ -760,6 +760,7 @@ function saveAsJson(){
             data.type = ctrl.dataset['ctrlType'];
             data.name = ctrl.dataset.name || '';
             data.property = [];
+            
             switch(data.type){
                 case 'text':
                     data.property.push({type: (ctrl.getAttribute('type') || 'text')});
@@ -772,11 +773,18 @@ function saveAsJson(){
                     break;
                 case 'cmbBox':
                     data.property.push({itemList: JSON.parse(ctrl.dataset.itemList)});
-                    data.option = {selected: $(ctrl).find('li.selected').val()}
+                    data.option = {selected: $(ctrl).find('li.selected').data('val')};
                     break;
                 case 'chkBox':
-                    data.property.push({caption: ctrl.getAttribute['caption']});
-                    data.option = {selected: true};
+                    data.property.push({caption: ctrl.getAttribute('caption')});
+                    data.option = {selected: $(ctrl).find('input')[0].checked};
+                    break;
+                case 'radio':
+                    data.itemList = JSON.parse(ctrl.dataset.itemList);
+                    data.selected = $(ctrl).find('input:checked').val();
+                    break;
+                case 'canvas':
+                    data.linePath = JSON.parse(ctrl.dataset.linePath || '[]');
                     break;
                 default:
                     continue;
@@ -785,6 +793,10 @@ function saveAsJson(){
             data.pos = {
                 left: ctrl.style.left,
                 top: ctrl.style.top,
+            };
+            data.size = {
+                width: ctrl.style.width || ($(ctrl).width() + 'px'),
+                height: ctrl.style.height || ($(ctrl).height() + 'px'),
             };
 
             ctrlData.push(data);
@@ -809,8 +821,9 @@ function saveAsJson(){
 //                     maxLength: 3,
 //                 },
 //             ],
-//             caption: 'asdf'
+//             caption: 'asdf',
 //             pos: {left: '10px', top: '10px'},
+//             size: {width, height},
 //         },
 //         {
 //             type: 'cmbBox',
@@ -819,7 +832,8 @@ function saveAsJson(){
 //                 {itemList: [{val: val, txt: txt}]},
 //             ],
 //             option: {selected: 'val'},
-//             pos: {left, top}
+//             pos: {left, top},
+//             size: {width, height},
 //         },
 //         {
 //             type: 'chkBox',
@@ -830,7 +844,16 @@ function saveAsJson(){
 //                 }
 //             ],
 //             option: {selected: true},
-//             pos: {left, top}
+//             pos: {left, top},
+//             size: {width, height},
+//         },
+//         {
+//             type: 'radio',
+//             name: '',
+//             itemList: [{val: val, txt: txt}],
+//             selected: 'val',
+//             pos: {left, top},
+//             size: {width, height},
 //         },], // page1
 //         [], // page2 ...
 //         [],
