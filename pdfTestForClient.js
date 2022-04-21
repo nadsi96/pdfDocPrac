@@ -25,12 +25,7 @@ function onInit(){
         }
         else{
             docState.pageNum -= 1;
-            $('#pdfCurrentPageNum').val(docState.pageNum);
-            let elem = $('#sideView .sidePdfPage')[docState.pageNum-1];
-            $('#sideView .sidePdfPage.selected').removeClass('selected');
-            elem.classList.add('selected');
-            $('#sideView').scrollTop(elem.offsetTop - 200);
-            $('#docArea').scrollTop($('.docPageClone')[docState.pageNum-1].offsetTop - 100);
+            _renderPage(docState.pageNum);
         }
     });
     $('#btn_next').on('click', function(){
@@ -39,19 +34,13 @@ function onInit(){
         }
         else{
             docState.pageNum += 1;
-            $('#pdfCurrentPageNum').val(docState.pageNum);
-            let elem = $('#sideView .sidePdfPage')[docState.pageNum-1];
-            $('#sideView .sidePdfPage.selected').removeClass('selected');
-            elem.classList.add('selected');
-            $('#sideView').scrollTop(elem.offsetTop - 200);
-            $('#docArea').scrollTop($('.docPageClone')[docState.pageNum-1].offsetTop - 100);
+            _renderPage(docState.pageNum);
         }
     });
     $('#pdfCurrentPageNum').on('change', function(){
         let pageNum = parseInt($('#pdfCurrentPageNum').val());
         console.log('pdfCurrentPageNum Changed');
         console.log(pageNum);
-        docState.pageNum = pageNum;
         if(pageNum < 1){
             $('#pdfCurrentPageNum').val(1);
             docState.pageNum = 1;
@@ -60,14 +49,54 @@ function onInit(){
             $('#pdfCurrentPageNum').val(docState.pdf.numPages);
             docState.pageNum = docState.pdf.numPages;
         }
-        renderPage(docState.pageNum);
+        else{
+            docState.pageNum = pageNum;
+        }
+        // renderPage(docState.pageNum);
+        _renderPage(docState.pageNum);
     });
 
-    $('#btn_saveAsPdf').on('click', saveToPDF);
+    $('#btn_saveAsPdf').on('click', function(){
+            if(!docState.pdf){
+                alert('open file first');
+                return;
+            }
+        
+            console.log('save as pdf');
+        
+            if(checkEmptyItem()){
+                // 필수항목 다 채워짐
+            }
+            else{
+                // ㄴㄴ
+                alert('fill required item');
+                return;
+            }
+            // 캔버스에 clear버튼 제거
+            $('.btn_canvasClear').remove();
+            $('.cmbBox ul').css('display', 'none');
+        
+            saveAsJson();
+            saveToPDF();
+    });
+}
+
+// 여기서는 페이지 다 출력되있으니까
+// 해당 위치로 스크롤만 이동
+function _renderPage(pageNum){
+    $('#pdfCurrentPageNum').val(pageNum);
+    
+    let elem = $('#sideView .sidePdfPage')[pageNum-1];
+    $('#sideView .sidePdfPage.selected').removeClass('selected');
+    elem.classList.add('selected');
+
+    $('#sideView').scrollTop(elem.offsetTop - 200);
+    $('#docArea').scrollTop($('.docPageClone')[pageNum-1].offsetTop - 100);    
 }
 
 // let testFileName = 'savedScreen/test (2).html';
 let testFileName = 'savedScreen/test (4).html';
+// 존재하는 파일인지 확인
 function checkSaveFile(fileName){
     // fileName = testFileName;
     $.ajax({
@@ -131,32 +160,6 @@ function includeHTML(fileName) {
 let docUrl = '../docs/Document.pdf';
 
 
-// 페이지마다 pdf페이지, 컨트롤 포함된 div 복사해서
-// display block으로 주고 save시키면 되려나
-function saveToPDF(){
-    if(!docState.pdf){
-        alert('open file first');
-        return;
-    }
-
-    console.log('save as pdf');
-
-    if(checkEmptyItem()){
-        // 필수항목 다 채워짐
-    }
-    else{
-        // ㄴㄴ
-        alert('fill required item');
-        return;
-    }
-    // 캔버스에 clear버튼 제거
-    $('.btn_canvasClear').remove();
-    $('.cmbBox ul').css('display', 'none');
-
-    saveAsJson();
-    _saveToPDF();
-}
-
 
 // 컨트롤에 지정된 데이터/속성값 입력
 function setCtrlData(){
@@ -201,6 +204,7 @@ function setCtrlData(){
 
 // 필수 체크한 것 중 빈칸 있는지 확인
 // chkBox 제외
+// 다 채워졌으면 true 반환
 function checkEmptyItem(){
     let flag = true;
 
@@ -245,6 +249,7 @@ function checkEmptyItem(){
     return flag;
 }
 
+// 컨트롤 정보 json 파일로 저장
 function saveAsJson(){
     let jsonData = {
         pdfPath: g_docPath,
@@ -307,7 +312,8 @@ function saveAsJson(){
     window.saveAs(blob, 'result.json');
 }
 
-function _saveToPDF(){
+// 작성된 html 문서 pdf 파일로 저장
+function saveToPDF(){
 
     // 페이지 하나씩 생성
     // 느린데 화질은 얘가 좀 더
@@ -329,6 +335,7 @@ function _saveToPDF(){
             }
         }).from(pages[0]);
 
+        // 첫 화면 만든 뒤, 페이지가 더 있으면 한 장씩 추가해서 만듦
         if(pages.length > 1){
             worker = worker.toPdf();
 
