@@ -33,8 +33,23 @@
         </div>
         
         <div class="contentContainer">
-            <div id="sideView"></div>
-            <div w3-include-html="innerFrame.html" class="contentArea htmlContainer"></div>
+            <div id="copySideView" class="sidePdfPageBlock" style="display: none">
+                <p></p>
+                <canvas class="sidePdfPage"></canvas>
+            </div>
+            <div id="sideView">
+                
+            </div>
+            <div id="docArea" style="height: 800px; overflow-y: scroll;">
+                <div id="copyDocPage" style="display: none">
+                    <div class="copyDocContent" style="position: relative;">
+                        <canvas class="copyPDFArea" style="position: relative;"></canvas>
+                        <!-- <div class="copyCtrlArea" style="position: absolute; top: 0px; left: 0px;"></div> -->
+                    </div>
+                    <!-- <div class="html2pdf__page-break"></div> -->
+                </div>
+            </div>
+            <div w3-include-html="innerFrame.html" class="contentArea htmlContainer" style="display: none;"></div>
         </div>
 
         </div>

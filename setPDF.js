@@ -150,7 +150,7 @@ function callPDF(docPath, fileLoadFlag){
         });
 
         if(fileLoadFlag == 'client'){
-            setCtrlData();
+            // setCtrlData();
         }
         else{
             if(fileLoadFlag == 'edit'){
@@ -171,10 +171,19 @@ function callPDF(docPath, fileLoadFlag){
         docState.canvas = document.getElementById('pdfArea');
         docState.context = docState.canvas.getContext('2d');
 
-        // pdf공간 옆에 미리보기화면
-        docState.pdf.getPage(1).then(function(page){
-            setSideView(page, 1);
-        })
+        if(fileLoadFlag == "client"){
+            // $('#docArea').empty();
+            $('.docPageClone').remove();
+            if(docState.pdf.numPages >= 1){
+                renderAllPage(1);
+            }
+        }
+        else{
+            // pdf공간 옆에 미리보기화면
+            docState.pdf.getPage(1).then(function(page){
+                setSideView(page, 1);
+            })
+        }
     });
 
 }
@@ -184,13 +193,12 @@ function setSideView(page, pageNum){
     let wscale = 200/page.view[2];
     let viewPort = page.getViewport({scale: wscale});
 
-    let div = document.createElement('div');
-    div.classList.add('sidePdfPageBlock');
-    let p = document.createElement('p');
-    p.textContent = pageNum + '.';
+    let clone = $('#copySideView').clone(true);
+    clone.css('display', 'flex');
+    clone.find('p').text(pageNum + '.');
     
-    let canvas = document.createElement('canvas');
-    canvas.classList.add('sidePdfPage');
+    let canvas = clone.find('canvas')[0];
+    
     canvas.height = viewPort.height;
     canvas.width = viewPort.width;
     canvas.addEventListener('click', function(){
@@ -207,9 +215,7 @@ function setSideView(page, pageNum){
     };
 
     page.render(renderContext).promise.then(()=>{
-        div.append(p);
-        div.append(canvas);
-        $('#sideView').append(div);
+        $('#sideView').append(clone);
 
         if(pageNum < docState.pdf.numPages){
             // 다음페이지 미리보기 생성
@@ -222,5 +228,89 @@ function setSideView(page, pageNum){
             // $('#sideView .sidePdfPage')[docState.pageNum-1].classList.add('selected');
             renderPage(docState.pageNum, true);
         }
+    });
+}
+
+
+// 모든 페이지 화면에 출력
+function renderAllPage(pageNum){
+    let srcPdfArea = document.getElementById('pdfArea');
+    let canvasW = srcPdfArea.offsetWidth;
+    let canvasH = srcPdfArea.offsetHeight;
+
+    let clone = $('#copyDocPage').clone(true);
+    clone.css('display', 'block');
+    clone.addClass('docPageClone');
+    clone.addClass('pageBorder');
+
+    let pdfArea = clone.find('canvas')[0];
+    docState.canvas = pdfArea;
+    docState.context = docState.canvas.getContext('2d');
+
+    pdfArea.width = canvasW;
+    pdfArea.height = canvasH;
+
+    return docState.pdf.getPage(pageNum).then(function(page){
+        let viewPort = page.getViewport({scale: docState.scale});
+        docState.canvas.height = viewPort.height;
+        docState.canvas.width = viewPort.width;
+
+        let ctrlArea = $('.ctrlArea')[pageNum-1].cloneNode(true);
+        ctrlArea.classList.remove('ctrlArea');
+        ctrlArea.classList.add('copyCtrlArea');
+        ctrlArea.style.position = 'absolute';
+        ctrlArea.style.display = 'block';
+        ctrlArea.style.top = '0px';
+        ctrlArea.style.left = '0px';
+        ctrlArea.style.width = viewPort.width + "px";
+        ctrlArea.style.height = viewPort.height + 'px';
+        clone.find('.copyDocContent').append(ctrlArea);
+
+        let renderContext = {
+            canvasContext: docState.context,
+            viewport: viewPort,
+        };
+        let renderTask = page.render(renderContext);
+
+        // page render after
+        return renderTask.promise.then(function(){
+
+            // pdfArea
+            $("#docArea").append(clone);
+
+            // sideView
+            let wscale = 200/page.view[2];
+            let viewPort = page.getViewport({scale: wscale});
+
+            let sideClone = $('#copySideView').clone(true);
+            sideClone.css('display', 'flex');
+            sideClone.attr('title', `${pageNum}/${docState.pdf.numPages}`);
+            sideClone.find('p').text(pageNum + '.');
+
+            let sideCanvas = sideClone.find('canvas')[0];
+            sideCanvas.width = viewPort.width;
+            sideCanvas.height = viewPort.height;
+            sideCanvas.getContext('2d').drawImage(pdfArea, 0, 0, viewPort.width, viewPort.height);
+            
+            sideCanvas.addEventListener('click', function(){
+                $('#sideView .sidePdfPage.selected').removeClass('selected');
+                this.classList.add('selected')
+                $('#sideView').scrollTop(this.offsetTop - 200);
+                // $('#docArea').scrollTop(clone.offset().top - 100);
+                $('#docArea').scrollTop(clone[0].offsetTop - 100);
+                docState.pageNum = pageNum;
+                $('#pdfCurrentPageNum').val(pageNum);
+            });
+            $('#sideView').append(sideClone);
+
+            if(pageNum < docState.pdf.numPages){
+                renderAllPage(pageNum+1);
+            }
+            else{
+                setCtrlData();
+                $('#sideView .sidePdfPage').first().addClass('selected')
+                $('.htmlContainer').empty();
+            }
+        });
     });
 }
